@@ -48,7 +48,7 @@ RETURN = '''
      description: ec2 instance tags key and value.
 ''' 
 
-from boto import ec2
+import boto3
 
 def main():
 
@@ -59,13 +59,14 @@ def main():
       )
   )
 
-  conn = ec2.connect_to_region(module.params['region'])
-  instance = conn.get_only_instances(module.params['instance_id'])[0]
+  ec2 = boto3.resource('ec2', module.params['region'])
 
   facts = {}
 
-  for key in instance.tags:
-    facts['ansible_ec2_tag_' + key] = instance.tags[key]
+  for instance in ec2.instances.all():
+    if instance.id == module.params['instance_id']:
+      for tag in instance.tags:
+        facts['ansible_ec2_tag_' + tag['Key']] = tag['Value']
 
   module.exit_json(changed=False, ansible_facts=facts)
 
