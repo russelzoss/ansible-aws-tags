@@ -20,7 +20,7 @@
 
 DOCUMENTATION = '''
 ---
-module: aws_tags
+module: aws_tags3
 short_description: Return ec2 instance tags
 description:
    - Given an instance id and its region, return its tags, such as Name, etc.
@@ -40,7 +40,7 @@ options:
 '''
 
 EXAMPLES = '''
-action: aws_tags instance_id=i-ac13f01d region=us-west-2
+action: aws_tags3 instance_id=i-ac13f01d region=us-west-2
 '''
 
 RETURN = '''
